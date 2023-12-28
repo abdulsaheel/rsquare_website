@@ -182,6 +182,11 @@
 
       // Show success modal
       $('#successModal').modal('show');
+              // Assuming the form submission is successful, send an analytics event
+        gtag('event', 'form_submission', {
+            'event_category': 'form',
+            'event_label': 'Contact Form Submission'
+        });
 
       // Optionally, you can clear the form after successful submission
       document.getElementById("contactForm").reset();
@@ -190,7 +195,9 @@
       console.error('Error:', error);
     });
   }
+
 </script>
+  
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11437257202"></script>
      <script>
         window.dataLayer = window.dataLayer || [];
