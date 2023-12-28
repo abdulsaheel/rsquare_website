@@ -188,6 +188,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     })
     .then(response => response.text())
     .then(data => {
+      console.log(response);
       // Hide loading spinner
       $('#loading').css('display', 'none');
 
