@@ -164,49 +164,50 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
-  function submitForm() {
-    var name = document.getElementById("name").value;
-    var mobile = document.getElementById("mobile").value;
+function submitForm() {
+  var name = document.getElementById("name").value;
+  var mobile = document.getElementById("mobile").value;
 
-    // Show loading spinner
-    $('#loading').css('display', 'block');
+  // Show loading spinner
+  $('#loading').css('display', 'block');
 
-    // Create a JSON object with the form data
-    var formData = {
-      name: name,
-      mobile: mobile,
-    };
+  // Create a JSON object with the form data
+  var formData = {
+    name: name,
+    mobile: mobile,
+  };
 
-    // Make a POST request to the Google Apps Script web app
-    fetch('https://script.google.com/macros/s/AKfycbwJuuHyUco1mtFrqq5GRhAhbhTRBolYKet6ADiteG_OGBpW0WXcUlGKupypvhM0_bC4gw/exec', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      mode: 'no-cors',
-      body: JSON.stringify(formData),
-    })
-    .then(response => response.text())
-    .then(data => {
-      console.log(response);
-      // Hide loading spinner
-      $('#loading').css('display', 'none');
+  // Make a POST request to the Google Apps Script web app
+  fetch('https://script.google.com/macros/s/AKfycbwJuuHyUco1mtFrqq5GRhAhbhTRBolYKet6ADiteG_OGBpW0WXcUlGKupypvhM0_bC4gw/exec', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    mode: 'no-cors',
+    body: JSON.stringify(formData),
+  })
+  .then(data => {
+    console.log(data); // Corrected from response to data
+    // Hide loading spinner
+    $('#loading').css('display', 'none');
 
-      // Show success modal
-      $('#successModal').modal('show');
-              // Assuming the form submission is successful, send an analytics event
-        gtag('event', 'form_submission', {
-            'event_category': 'form',
-            'event_label': 'Contact Form Submission'
-        });
-
-      // Optionally, you can clear the form after successful submission
-      document.getElementById("contactForm").reset();
-    })
-    .catch((error) => {
-      console.error('Error:', error);
+    // Show success modal
+    $('#successModal').modal('show');
+    
+    // Assuming the form submission is successful, send an analytics event
+    gtag('event', 'form_submission', {
+      'event_category': 'form',
+      'event_label': 'Contact Form Submission'
     });
-  }
+
+    // Optionally, you can clear the form after successful submission
+    document.getElementById("contactForm").reset();
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+}
+
 
 </script>
   
