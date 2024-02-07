@@ -1,14 +1,12 @@
 "use strict";
 function submitForm(event) {
+    if (validateCaptcha()){
 	$('#successMessage').css('display', 'block');
-
 	event.preventDefault(); // Prevents the default form submission behavior
 	// You can add additional logic here if needed
 	var form = event.target;
 	var formData = new FormData(form);
-
-	// You can add additional logic here if needed
-
+    
 	// Perform the AJAX request
 	fetch(form.action, {
 		method: form.method,
@@ -16,6 +14,10 @@ function submitForm(event) {
 		mode: 'no-cors'
 	},
 	)
+} else
+{
+    alert("Please enter correct captcha")
+}
 }
 $(document).ready(function () {
 	/* Video Lightbox */
