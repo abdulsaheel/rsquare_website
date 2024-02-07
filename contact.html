@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NZT4B2NM');</script>
+<!-- End Google Tag Manager -->
   <meta charset="UTF-8">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -74,7 +80,14 @@
 <!-- <script src="js/captcha.js"></script> -->
 <link rel="stylesheet" href="css/captcha.css">
 </head>
+
+<body onload="createCaptcha()">
 <body>
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NZT4B2NM"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
 
 <div class="container">
     <div class="container mt-3">
@@ -110,8 +123,11 @@
           <label for="mobile">Mobile:</label>
           <input type="tel" class="form-control" id="mobile" name="mobile" required>
         </div>
-        
-        <button type="button" class="btn btn-primary" onclick="submitForm()">Submit</button>
+
+        <div id="captcha">
+        </div>
+        <input type="text" placeholder="Captcha" id="cpatchaTextBox"/>
+        <button type="button" class="btn btn-primary" onclick="submitForm(event)">Submit</button>
       </form>
       <div id="loading" style="display: none; text-align: center;">
         <div class="spinner-border" role="status">
@@ -154,45 +170,71 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.8/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+
+<!-- jQuery -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+
 <script>
-  function submitForm() {
-    var name = document.getElementById("name").value;
-    var mobile = document.getElementById("mobile").value;
+function submitForm() {
+  var name = document.getElementById("name").value;
+  var mobile = document.getElementById("mobile").value;
+  if (validateCaptcha()) {
+  // Show loading spinner
+  $('#loading').css('display', 'block');
 
-    // Show loading spinner
-    $('#loading').css('display', 'block');
+  // Create a JSON object with the form data
+  var formData = {
+    name: name,
+    mobile: mobile,
+  };
 
-    // Create a JSON object with the form data
-    var formData = {
-      name: name,
-      mobile: mobile,
-    };
+  // Make a POST request to the Google Apps Script web app
+  fetch('https://script.google.com/macros/s/AKfycbwJuuHyUco1mtFrqq5GRhAhbhTRBolYKet6ADiteG_OGBpW0WXcUlGKupypvhM0_bC4gw/exec', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    mode: 'no-cors',
+    body: JSON.stringify(formData),
+  })
+  .then(data => {
+    console.log(data); // Corrected from response to data
+    // Hide loading spinner
+    $('#loading').css('display', 'none');
 
-    // Make a POST request to the Google Apps Script web app
-    fetch('https://script.google.com/macros/s/AKfycbyVTphZ74uGfK-t9MCMbt0-5mLNTreSEce4oOUwwks_ioj3pXIcNvz4MDOJyI_Tz7Ve/exec', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      mode: 'no-cors',
-      body: JSON.stringify(formData),
-    })
-    .then(response => response.text())
-    .then(data => {
-      // Hide loading spinner
-      $('#loading').css('display', 'none');
-
-      // Show success modal
-      $('#successModal').modal('show');
-
-      // Optionally, you can clear the form after successful submission
-      document.getElementById("contactForm").reset();
-    })
-    .catch((error) => {
-      console.error('Error:', error);
+    // Show success modal
+    $('#successModal').modal('show');
+    
+    // Assuming the form submission is successful, send an analytics event
+    gtag('event', 'form_submission', {
+      'event_category': 'form',
+      'event_label': 'Contact Form Submission'
     });
-  }
+
+    // Optionally, you can clear the form after successful submission
+    document.getElementById("contactForm").reset();
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+}
+else{
+        // If captcha is invalid, display an error message
+        alert("Incorrect captcha entered. Please try again.");
+    }
+}
+
 </script>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11437257202"></script>
+     <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+      
+        gtag('config', 'AW-11437257202');
+      </script>
+
 
 </body>
 </html>
